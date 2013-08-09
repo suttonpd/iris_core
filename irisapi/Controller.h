@@ -125,6 +125,8 @@ public:
     boost::shared_ptr<EventBase> b;
     eventQueue_.tryPop(b);
     e = boost::dynamic_pointer_cast< Event<T> >(b);
+    if(e == NULL)
+      throw InvalidDataTypeException("Event data type mismatch for event " + b->eventName);
   }
 
   /// Called by derived controller to reconfigure the radio.

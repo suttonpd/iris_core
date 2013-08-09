@@ -48,6 +48,21 @@ BOOST_AUTO_TEST_SUITE (ControllerTests)
 
 BOOST_AUTO_TEST_CASE(ControllerBasic)
 {
+  try{
+  TestController t;
+  t.subscribeToEvents();
+  boost::shared_ptr<EventBase> b(new Event<int>);
+  int i = 9;
+  boost::dynamic_pointer_cast< Event<int> >(b)->data.push_back(i);
+  t.postEvent(b);
+  BOOST_REQUIRE_NO_THROW(t.process());
+  std::vector<int> v = t.getData();
+  BOOST_CHECK(v.size() == 1);
+  BOOST_CHECK(v.front() == i);
+  }
+  catch(std::exception e)
+  {
+  }
 }
 
 BOOST_AUTO_TEST_SUITE_END()

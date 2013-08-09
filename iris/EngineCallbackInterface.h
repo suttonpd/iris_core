@@ -34,6 +34,7 @@
 #ifndef IRIS_ENGINECALLBACKINTERFACE_H_
 #define IRIS_ENGINECALLBACKINTERFACE_H_
 
+#include <boost/shared_ptr.hpp>
 #include "irisapi/Event.h"
 
 namespace iris
@@ -46,7 +47,7 @@ namespace iris
 class EngineCallbackInterface{
 public:
   virtual ~EngineCallbackInterface(){};
-  virtual void activateEvent(Event &e) = 0;
+  virtual void activateEvent(boost::shared_ptr<EventBase> e) = 0;
 };
 
 } // namespace iris

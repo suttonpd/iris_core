@@ -336,7 +336,7 @@ namespace iris
                 command.commandName << " to " << command.componentName;
     }
 
-    void PhyEngine::activateEvent(Event &e)
+    void PhyEngine::activateEvent(boost::shared_ptr<EventBase> e)
     {
         if(engineManager_ == NULL)
         {

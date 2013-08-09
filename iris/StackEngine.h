@@ -85,7 +85,7 @@ public:
   std::string getName() const;
   void addReconfiguration(ReconfigSet reconfigs);
   void postCommand(Command command);
-  void activateEvent(Event &e);
+  void activateEvent(boost::shared_ptr<EventBase> e);
 
 private:
   /// The graph representing the components within the engine and the links between them

@@ -241,7 +241,7 @@ namespace iris
         }
     }
 
-    void StackEngine::activateEvent(Event &e)
+    void StackEngine::activateEvent(boost::shared_ptr<EventBase> e)
     {
         if(engineManager_ == NULL)
         {

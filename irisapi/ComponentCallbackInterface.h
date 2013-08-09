@@ -35,6 +35,7 @@
 #define IRISAPI_COMPONENTCALLBACKINTERFACE_H_
 
 #include <string>
+#include <boost/shared_ptr.hpp>
 #include "irisapi/Event.h"
 
 namespace iris
@@ -49,7 +50,7 @@ class ComponentCallbackInterface{
 public:
   virtual ~ComponentCallbackInterface(){};
 
-  virtual void activateEvent(Event &e) = 0;
+  virtual void activateEvent(boost::shared_ptr<EventBase> e) = 0;
 };
 
 } // namespace iris

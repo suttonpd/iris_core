@@ -82,7 +82,7 @@ public:
   std::string getName() const;
   void addReconfiguration(ReconfigSet reconfigs);
   void postCommand(Command command);
-  void activateEvent(Event &e);
+  void activateEvent(boost::shared_ptr<EventBase> e);
 
 private:
   /// The component manager for this engine

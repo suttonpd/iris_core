@@ -35,10 +35,19 @@
 #define IRISAPI_EVENT_H_
 
 #include <vector>
-#include <boost/any.hpp>
 
 namespace iris
 {
+
+class EventBase
+{
+ public:
+  EventBase(){}
+  virtual ~EventBase(){}
+  int typeId;                     ///< The type of data being passed.
+  std::string eventName;          ///< The name of this event.
+  std::string componentName;      ///< The name of the component which created it.
+};
 
 /** Event objects which can be activated by Components.
  *
@@ -46,12 +55,12 @@ namespace iris
  * Controllers that something has happened. This permits a Controller
  * to take action such as reconfiguring the radio.
  */
-struct Event
+template<class T>
+class Event
+  :public EventBase
 {
-  std::vector<boost::any> data;   ///< The data passed with the event.
-  int typeId;                     ///< The type of data being passed.
-  std::string eventName;          ///< The name of this event.
-  std::string componentName;      ///< The name of the component which created it.
+ public:
+  std::vector<T> data;            ///< The data passed with the event.
 };
 
 } /* namespace iris */

@@ -37,7 +37,8 @@
 #include <boost/graph/topological_sort.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>   //Autodeleting, Exception-safe container of pointers
-#include "boost/filesystem.hpp"
+#include <boost/filesystem.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "iris/RadioRepresentation.h"
 #include "iris/PhyEngine.h"
@@ -98,7 +99,7 @@ public:
   void reconfigureRadio(ReconfigSet reconfigs);
   void postCommand(Command command);
   std::string getParameterValue(std::string paramName, std::string componentName);
-  void activateEvent(Event &e);
+  void activateEvent(boost::shared_ptr<EventBase> e);
 };
 
 } // namespace iris

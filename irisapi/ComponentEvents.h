@@ -79,7 +79,7 @@ protected:
     return *this;
   }
 
-  void registerEvent(std::string name, std::string description, int typeId)
+  void registerEvent(std::string name, std::string description, int typeId=0)
   {
     if(typeId < 0)
       throw InvalidDataTypeException("Invalid data type specified when registering event " + name);
@@ -105,30 +105,20 @@ inline void ComponentEvents::activateEventInternal(std::string compName, std::st
 {
   //Check that we have an interface to the engine
   if(engine_ == NULL)
-  {
     return;
-  }
 
   //Check that the event exists and that the datatypes match
   std::map<std::string, EventDescription>::const_iterator it = events_.find(name);
   if (it == events_.end())
     throw EventNotFoundException("Event " + name + " not found");
   
-  if(it->second.typeId == TypeInfo<T>::identifier)
-  {
-    //std::vector<boost::any> d;
-    //d.push_back(boost::any(data));
-    //d_engine->activateEvent(name, d);
-    Event e;
-    e.data.push_back(boost::any(data));
-    e.eventName = name;
-    e.componentName = compName;
-    e.typeId = TypeInfo<T>::identifier;
-    engine_->activateEvent(e);
-    return;
-  }else{
-    throw InvalidDataTypeException("Event data type did not match registered type for event " + name); 
-  }
+  boost::shared_ptr<EventBase> b(new Event<T>());
+  boost::dynamic_pointer_cast< Event<T> >(b)->data.push_back(data);
+  b->eventName = name;
+  b->componentName = compName;
+  b->typeId = TypeInfo<T>::identifier;
+  engine_->activateEvent(b);
+  return;
 }
 
 template<typename T>
@@ -145,23 +135,15 @@ inline void ComponentEvents::activateEventInternal(std::string compName, std::st
   if (it == events_.end())
     throw EventNotFoundException("Event " + name + " not found");
 
-  if(it->second.typeId == TypeInfo<T>::identifier)
-  {
-    //std::vector<boost::any> d;
-    //d.resize(data.size());
-    //std::copy(data.begin(), data.end(), d.begin());
-    //d_engine->activateEvent(name, d);
-    Event e;
-    e.data.resize(data.size());
-    std::copy(data.begin(), data.end(), e.data.begin());
-    e.eventName = name;
-    e.componentName = compName;
-    e.typeId = TypeInfo<T>::identifier;
-    engine_->activateEvent(e);
-    return;
-  }else{
-    throw InvalidDataTypeException("Event data type did not match registered type for event " + name); 
-  }
+  boost::shared_ptr<EventBase> b(new Event<T>());
+  boost::shared_ptr< Event<T> > e = boost::dynamic_pointer_cast< Event<T> >(b);
+  e->data.resize(data.size());
+  std::copy(data.begin(), data.end(), e->data.begin());
+  b->eventName = name;
+  b->componentName = compName;
+  b->typeId = TypeInfo<T>::identifier;
+  engine_->activateEvent(b);
+  return;
 }
 
 } // namespace iris

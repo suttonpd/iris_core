@@ -251,9 +251,9 @@ namespace iris
     }
 
     //! Inform controllers that an event has been activated
-    void ControllerManager::activateEvent(Event &e)
+    void ControllerManager::activateEvent(boost::shared_ptr<EventBase> e)
     {
-        vector<Controller*> controllers = eventMap_[e.eventName + e.componentName];
+        vector<Controller*> controllers = eventMap_[e->eventName + e->componentName];
         vector<Controller*>::iterator contIt;
         for(contIt=controllers.begin();contIt!=controllers.end();++contIt)
         {

@@ -140,7 +140,7 @@ public:
    *
    * @param e   The event to activate.
    */
-  void activateEvent(Event &e);
+  void activateEvent(boost::shared_ptr<EventBase> e);
 
   /** Reconfigure the radio
    *

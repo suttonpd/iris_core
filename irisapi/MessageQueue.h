@@ -89,6 +89,16 @@ public:
     queue_.pop();
   }
 
+  /// Wait until there is data in the queue
+  void wait()
+  {
+    boost::mutex::scoped_lock lock(mutex_);
+    while(queue_.empty())
+    {
+      conditionVariable_.wait(lock);
+    }
+  }
+
 private:
   std::queue<T> queue_;         ///< Our internal queue container.
   mutable boost::mutex mutex_;  ///< Mutex used for thread safety.

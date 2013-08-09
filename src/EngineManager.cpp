@@ -205,7 +205,7 @@ namespace iris
         return radioRep_.getParameterValue(paramName, componentName);
     }
 
-    void EngineManager::activateEvent(Event &e)
+    void EngineManager::activateEvent(boost::shared_ptr<EventBase> e)
     {
         //Pass the event to the controller manager
         controllerManager_.activateEvent(e);

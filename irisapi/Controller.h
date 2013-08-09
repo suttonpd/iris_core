@@ -39,6 +39,7 @@
 #include <boost/thread/thread.hpp>
 #include <boost/bind.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition.hpp>
 #include <boost/algorithm/string.hpp>
@@ -112,9 +113,18 @@ public:
   }
 
   /// Process an event - should be overwritten in the controller subclass
-  virtual void processEvent(Event &e)
+  virtual void process()
   {
-    LOG(LERROR) << "Function processEvent has not been implemented in controller " << name_;
+    LOG(LERROR) << "Function process has not been implemented in controller " << name_;
+  }
+
+  /// Called by derived controller to get a (typecast) event from the queue
+  template<class T>
+  void getEvent(boost::shared_ptr< Event<T> >& e)
+  {
+    boost::shared_ptr<EventBase> b;
+    eventQueue_.tryPop(b);
+    e = boost::dynamic_pointer_cast< Event<T> >(b);
   }
 
   /// Called by derived controller to reconfigure the radio.
@@ -165,7 +175,7 @@ public:
   }
 
   /// Called by ControllerManager to pass an event to this Controller
-  void postEvent(Event &e)
+  void postEvent(boost::shared_ptr<EventBase> e)
   {
     eventQueue_.push(e);
   }
@@ -233,9 +243,8 @@ public:
           boost::this_thread::interruption_point();
 
           //Check message queue for Events
-          Event currentEvent;
-          eventQueue_.waitAndPop(currentEvent);  //Blocks if queue is empty
-          processEvent(currentEvent);
+          eventQueue_.wait();  //Wait for an event
+          process();
         }
         catch(boost::thread_interrupted)
         {
@@ -294,7 +303,7 @@ private:
   std::string author_;
   std::string version_;
 
-  MessageQueue< Event > eventQueue_;                ///< Queue of incoming Event objects.
+  MessageQueue< boost::shared_ptr<EventBase> > eventQueue_; ///< Incoming events.
   ControllerCallbackInterface* controllerManager_;  ///< Interface to the ControllerManager.
   boost::scoped_ptr< boost::thread > thread_;       ///< This controller's thread.
 

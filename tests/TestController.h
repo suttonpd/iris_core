@@ -43,6 +43,7 @@ namespace iris
 class TestController : public Controller
 {
 private:
+  std::vector<int> test_;
 
 public:
   TestController() 
@@ -50,15 +51,24 @@ public:
     "This is just for a little bit of testing",  // description
     "Paul Sutton", //author
     "1.0") // version
+  {}
+  virtual ~TestController() {}
+  virtual void initialize(){}
+  virtual void process()
   {
+    boost::shared_ptr< Event<int> > e;
+    getEvent(e);
+    test_ = e->data;
   }
-
-  virtual ~TestController() {};
-
-  virtual void initialize(){};
-  virtual void processEvent(){};
-  virtual void destroy(){};
-  virtual void subscribeToEvents(){};
+  virtual void destroy(){}
+  virtual void subscribeToEvents()
+  {
+    subscribeToEvent("testevent", "testcomponent");
+  }
+  std::vector<int> getData()
+  {
+    return test_;
+  }
 };
 
 } /* namespace iris */

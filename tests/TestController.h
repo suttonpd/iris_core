@@ -58,7 +58,8 @@ public:
   {
     boost::shared_ptr< Event<int> > e;
     getEvent(e);
-    test_ = e->data;
+    if(e->eventName == "testevent")
+      processTestEvent(e);
   }
   virtual void destroy(){}
   virtual void subscribeToEvents()
@@ -68,6 +69,10 @@ public:
   std::vector<int> getData()
   {
     return test_;
+  }
+  virtual void processTestEvent(boost::shared_ptr< Event<int> > e)
+  {
+    test_ = e->data;
   }
 };
 

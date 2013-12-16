@@ -49,16 +49,20 @@ BOOST_AUTO_TEST_SUITE (ControllerTests)
 BOOST_AUTO_TEST_CASE(ControllerBasic)
 {
   try{
-  TestController t;
-  t.subscribeToEvents();
-  boost::shared_ptr<EventBase> b(new Event<int>);
-  int i = 9;
-  boost::dynamic_pointer_cast< Event<int> >(b)->data.push_back(i);
-  t.postEvent(b);
-  BOOST_REQUIRE_NO_THROW(t.process());
-  std::vector<int> v = t.getData();
-  BOOST_CHECK(v.size() == 1);
-  BOOST_CHECK(v.front() == i);
+    TestController t;
+    t.subscribeToEvents();
+    boost::shared_ptr<EventBase> b(new Event<int>);
+    b->eventName = "testevent";
+    b->componentName = "testcomponent";
+    b->typeId = TypeInfo<int>::identifier;
+    int i = 9;
+    boost::dynamic_pointer_cast< Event<int> >(b)->data.push_back(i);
+    t.postEvent(b);
+    BOOST_REQUIRE_NO_THROW(t.process());
+    std::vector<int> v = t.getData();
+    BOOST_CHECK(v.size() == 1);
+    BOOST_CHECK(v.front() == i);
+    BOOST_CHECK(v[0] == 9);
   }
   catch(std::exception e)
   {

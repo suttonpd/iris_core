@@ -30,3 +30,7 @@ Optional:
 ## License
 
 Iris is licensed under LGPL v3. For more information see LICENSE.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/suttonpd/iris_core/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

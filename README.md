@@ -30,3 +30,9 @@ Optional:
 ## License
 
 Iris is licensed under LGPL v3. For more information see LICENSE.
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/565a545f5d61e93dd441e8ee1eea0a25 "githalytics.com")](http://githalytics.com/softwareradiosystems/iris_core)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/softwareradiosystems/iris_core/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
